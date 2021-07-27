@@ -135,10 +135,7 @@ export default function SortList(props)
       items === null ?
         <View />
         :
-        <View style={props.horizontal === true ?
-          {height:"100%", width:containerSize, flexDirection:'row'} :
-          {width:"100%", height:containerSize}}
-        >
+        <View style={props.horizontal === true ? {height:"100%", flexDirection:'row'} : {width:"100%"}}>
           {items.map((item, index) => getItem(item, index))}
         </View>
     );

@@ -7,7 +7,6 @@ export default class SortListItem extends Component
   {
     super(props);
     let position = new Animated.ValueXY();
-    let highlighter = new Animated.Value(0);
     const panResponder = PanResponder.create(
     {
         onStartShouldSetPanResponder: () => true,
@@ -50,7 +49,6 @@ export default class SortListItem extends Component
     {
       panResponder,
       position,
-      highlighter,
       itemSize: 0,
       offset: 0,
       index: props.index,
@@ -100,10 +98,6 @@ export default class SortListItem extends Component
       this.state.position.setValue(nullPos);
       if(highlight === true)
       {
-        Animated.timing(this.state.highlighter, { toValue:1, duration: 800, }).start(() =>
-        {
-          Animated.timing(this.state.highlighter, { toValue:0, duration: 0, }).start();
-        });
         Animated.timing(this.state.position, { toValue:(this.props.horizontal === true ? {x:0,y:25} : {x:25,y:0}), duration: 150, }).start(() =>
         {
           Animated.timing(this.state.position, { toValue:nullPos, duration: 150, }).start();
@@ -137,18 +131,6 @@ export default class SortListItem extends Component
           {...this.state, itemSize:(this.props.horizontal === true ? event.nativeEvent.layout.width : event.nativeEvent.layout.height)})}
       >
         {this.props.renderItem(this.state.panResponder.panHandlers, this.props.id, this.props.itemData)}
-        <Animated.View style={[
-          s.sphere,
-          this.props.horizontal === true ? {marginleft:-10} : {marginTop:-10},
-          {
-            backgroundColor:this.state.highlighter.interpolate(
-            {
-              inputRange: [0, 0.4, 0.7, 1],
-              outputRange: ["rgba(0,142,230,0)", "rgba(0,142,230,0)", "rgba(0,142,230,0.3)", "rgba(0,142,230,0)"],
-            }),
-            transform: [{ scale: this.state.highlighter }]
-          }
-        ]}/>
       </Animated.View>
     );
   }

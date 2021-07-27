@@ -103,7 +103,7 @@ export default function SortList(props)
       const maxShiftNext = Math.trunc(scrollPos / itemSize);
       const maxIndex = Math.max(...(newItems.filter(x => x.id !== id).map(x => x.index)));
       const maxShiftPrev = newItems.length - (Math.trunc(((newItems.length * itemSize) - (scrollPos  + containerSize)) / itemSize) + 1);
-      if(isEdging < 0 && minIndex <= maxShiftNext)
+      if(isEdging < 0 && minIndex < maxShiftNext)
         newItems.forEach(r => r.index++);
       else if(isEdging > 0 && maxIndex >= maxShiftPrev)
         newItems.forEach(r => r.index--);
@@ -135,7 +135,10 @@ export default function SortList(props)
       items === null ?
         <View />
         :
-        <View style={props.horizontal === true ? {height:"100%", flexDirection:'row'} : {width:"100%"}}>
+        <View style={props.horizontal === true ?
+          {height:"100%", width:containerSize, flexDirection:'row'} :
+          {width:"100%", height:containerSize}}
+        >
           {items.map((item, index) => getItem(item, index))}
         </View>
     );
@@ -180,7 +183,7 @@ export default function SortList(props)
         <ScrollView
           ref={scrollList}
           horizontal={props.horizontal}
-          style={{zIndex:1}, props.horizontal === true ? {height:"100%"} : {width:"100%"}}
+          style={{height:"100%", width:"100%", zIndex:1}}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           onScroll={onScroll}
